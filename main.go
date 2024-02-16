@@ -48,7 +48,7 @@ type WebProduct struct {
 	image, name, price string
 }
 
-
+//creates everything we want to do with the file into one nice big function :)
 func CSVFILE(wp []WebProduct, col *colly.Collector) {
 
 	col.OnHTML("li.product", func(e *colly.HTMLElement) {
