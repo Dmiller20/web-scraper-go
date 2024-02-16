@@ -48,8 +48,10 @@ type WebProduct struct {
 	image, name, price string
 }
 
-//creates everything we want to do with the file into one nice big function :)
-func CSVFILE(wp []WebProduct, col *colly.Collector) {
+
+func CSVFILE(wp []WebProduct, col *colly.Collector, URL string) {
+	
+	col.Visit(URL)
 
 	col.OnHTML("li.product", func(e *colly.HTMLElement) {
 
@@ -64,7 +66,7 @@ func CSVFILE(wp []WebProduct, col *colly.Collector) {
 	})
 
 
-	file, err := os.Create("Scraper.csv")
+	file, err := os.Create("output.csv")
 	if err != nil {
 		log.Fatalln("Failed to create output CSV file", err)
 	}
@@ -99,7 +101,7 @@ func CSVFILE(wp []WebProduct, col *colly.Collector) {
 		write.Write(record)
 	}
 
-	
+
 	defer write.Flush()
 }
 
@@ -108,10 +110,9 @@ func main() {
 
 	c := colly.NewCollector()
 	var webProduct []WebProduct
-
-	c.Visit("https://scrapeme.live/shop/")
+	url := "https://scrapeme.live/shop/"
 
 	PrintScraper(c)
 
-	CSVFILE(webProduct, c)
+	CSVFILE(webProduct, c, url)
 }
